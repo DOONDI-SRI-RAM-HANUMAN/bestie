@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Bestie? 💕</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #FFE4E8;
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-image: radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%), radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%);
+        }
+
+        .container { text-align: center; padding: 40px 20px; z-index: 1; width: 100%; max-width: 600px; }
+        h1 { font-size: 2.5rem; color: #d63384; font-weight: 900; margin-bottom: 20px; }
+        
+        .gif-container { margin: 20px auto; display: flex; justify-content: center; }
+        #cat-gif { width: 250px; height: 250px; object-fit: contain; transition: opacity 0.3s ease; }
+
+        .buttons { display: flex; gap: 20px; justify-content: center; align-items: center; margin-top: 30px; min-height: 100px; flex-wrap: wrap; }
+        
+        #yes-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white; border: none; border-radius: 16px; font-size: 1.5rem;
+            font-weight: 900; padding: 15px 40px; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        #no-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white; border: none; border-radius: 12px; font-size: 1.1rem;
+            font-weight: 700; padding: 12px 25px; cursor: pointer; position: relative;
+            transition: all 0.2s;
+        }
+
+        #tease-text { color: #d63384; font-weight: 700; margin-top: 15px; height: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-ui">
+        <h1 id="title">Will you be my Bestie? 💕</h1>
+        <div class="gif-container">
+            <img id="cat-gif" src="https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif" alt="cute character">
+        </div>
+        <div class="buttons">
+            <button id="yes-btn" onclick="handleYesClick()">Yes</button>
+            <button id="no-btn" onmouseover="handleNoHover()" onclick="handleNoHover()">No</button>
+        </div>
+        <div id="tease-text"></div>
+    </div>
+
+    <script>
+        const gifStages = [
+            "https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif",
+            "https://media1.tenor.com/m/uDugCXK4vI4AAAAd/chiikawa-hachiware.gif",
+            "https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif",
+            "https://media.tenor.com/OGY9zdREsVAAAAAj/somsom1012.gif",
+            "https://media1.tenor.com/m/WGfra-Y_Ke0AAAAd/chiikawa-sad.gif",
+            "https://media.tenor.com/CivArbX7NzQAAAAj/somsom1012.gif",
+            "https://media.tenor.com/5_tv1HquZlcAAAAj/chiikawa.gif"
+        ];
+
+        const noMessages = ["No", "Are you sure? 🤔", "Bestie please... 🥺", "I will be so sad... 😢", "Don't do this... 😭", "You're breaking my heart! 💔", "Last chance! 😱"];
+        let noClickCount = 0;
+        let teased = false;
+
+        function handleYesClick() {
+            if (!teased && noClickCount < 3) {
+                document.getElementById('tease-text').textContent = "Wait! Try clicking No first... I have a surprise for you! 😏";
+                teased = true;
+                return;
+            }
+            // If they have teased enough or tried to click No, allow Yes
+            document.getElementById('main-ui').innerHTML = `
+                <h1>Yay! Besties forever! 🎉💖</h1>
+                <div class="gif-container">
+                    <img src="https://media.tenor.com/eNHbizSfVb0AAAAj/lovemode-cute.gif" style="width:250px">
+                </div>
+                <p style="font-size: 1.5rem; color: #d63384; margin-top:20px;">You're the best friend ever! 💕</p>
+            `;
+        }
+
+        function handleNoHover() {
+            noClickCount++;
+            teased = true; // They interacted with No, so allow Yes now
+            document.getElementById('tease-text').textContent = "";
+            
+            const noBtn = document.getElementById('no-btn');
+            const yesBtn = document.getElementById('yes-btn');
+            const catGif = document.getElementById('cat-gif');
+
+            noBtn.textContent = noMessages[Math.min(noClickCount, noMessages.length - 1)];
+            yesBtn.style.fontSize = `${1.5 + (noClickCount * 0.2)}rem`;
+            yesBtn.style.padding = `${15 + (noClickCount * 3)}px ${40 + (noClickCount * 5)}px`;
+            catGif.src = gifStages[Math.min(noClickCount, gifStages.length - 1)];
+
+            if (noClickCount >= 3) {
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = `${Math.random() * 70}%`;
+                noBtn.style.top = `${Math.random() * 70}%`;
+            }
+        }
+    </script>
+</body>
+</html>
